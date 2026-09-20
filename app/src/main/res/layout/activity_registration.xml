@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistrationActivity"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/textViewRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registration"
+        android:textSize="46dp"
+        android:layout_margin="12dp"
+        android:textColor="@android:color/holo_purple"
+        android:textAlignment="center"
+        />
+
+    <EditText
+        android:id="@+id/editTextRegistrationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:inputType="text"
+        android:hint="Enter your name" />
+
+    <EditText
+        android:id="@+id/editTextRegistrationAge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:inputType="number"
+        android:hint="Enter your age" />
+
+    <EditText
+        android:id="@+id/editTextRegistrationSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:inputType="text"
+        android:hint="Enter your surname" />
+
+    <EditText
+        android:id="@+id/editTextRegistrationEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:layout_margin="12dp"
+        android:hint="Enter your email"/>
+
+    <EditText
+        android:id="@+id/editTextRegistrationPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:layout_margin="12dp"
+        android:hint="Enter your password"
+        />
+
+    <Button
+        android:id="@+id/buttonRegistrationNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="Next" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

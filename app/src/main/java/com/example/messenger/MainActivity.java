@@ -1,13 +1,18 @@
 package com.example.messenger;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.LayoutInflaterCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -32,71 +37,25 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         auth = FirebaseAuth.getInstance();
-        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = auth.getCurrentUser();
-                if(user == null){
-                    Log.d(TAG, "Not authorized");
-                } else{
-                    Log.d(TAG, "Authorized " + user.getUid());
-                }
-            }
-        });
+    }
 
-//        auth.createUserWithEmailAndPassword("nurihandsome@yandex.ru", "password")
-//                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                    @Override
-//                    public void onSuccess(AuthResult authResult) {
-//                        FirebaseUser user = auth.getCurrentUser();
-//                        if (user == null){
-//                            Log.d(TAG, "Not authorized");
-//                        } else {
-//                            Log.d(TAG, "Authorized");
-//                        }
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d(TAG, e.toString());
-//                    }
-//                });
+    public static Intent newIntent(Context context){
+        return new Intent(context, MainActivity.class);
+    }
 
-//        FirebaseUser user = auth.getCurrentUser();
-////        auth.signOut();
-//        user = auth.getCurrentUser();
-//        if (user == null){
-//            Log.d(TAG, "Not authorized");
-//        }else{
-//            Log.d(TAG, "Authorized " + user.getUid());
-//        }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.logOutMenuItem) {
+            auth.signOut();
+            startActivity(LogInActivity.newIntent(MainActivity.this));
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-
-//        auth.signInWithEmailAndPassword("example@mail.ru", "password")
-//                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                    @Override
-//                    public void onSuccess(AuthResult authResult) {
-//                        FirebaseUser user = auth.getCurrentUser();
-//                        user = auth.getCurrentUser();
-//                        if (user == null){
-//                            Log.d(TAG, "Not authorized");
-//                        }else{
-//                            Log.d(TAG, "Authorized " + user.getUid());
-//                        }
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d(TAG, e.toString());
-//                    }
-//                });
-//
-//        auth.signOut();
-//
-        auth.sendPasswordResetEmail("nurihandsome@yandex.ru");
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 }
