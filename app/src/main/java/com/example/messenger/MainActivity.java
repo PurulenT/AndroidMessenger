@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.LayoutInflaterCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private final String TAG = "MainActivityLog";
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,21 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        auth = FirebaseAuth.getInstance();
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        observeViewModel();
+
+    }
+
+    private void observeViewModel(){
+        viewModel.getUser().observe(this, new Observer<FirebaseUser>() {
+            @Override
+            public void onChanged(FirebaseUser firebaseUser) {
+                if (firebaseUser == null){
+                    startActivity(LogInActivity.newIntent(MainActivity.this));
+                    finish();
+                }
+            }
+        });
     }
 
     public static Intent newIntent(Context context){
@@ -46,9 +63,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logOutMenuItem) {
-            auth.signOut();
-            startActivity(LogInActivity.newIntent(MainActivity.this));
-            finish();
+            viewModel.logout();
         }
         return super.onOptionsItemSelected(item);
     }
