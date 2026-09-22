@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,24 +25,46 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private final String TAG = "MainActivityLog";
     private MainViewModel viewModel;
+    private RecyclerView recyclerViewUsers;
+    private UsersAdapter usersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.recyclerViewUsers), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        initViews();
+        recyclerViewUsers.setAdapter(usersAdapter);
+
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < 30; i++){
+            users.add(new User("id" + i, "name " + i, "surname " + i,
+                    "email " + i , i, "password", new Random().nextBoolean()));
+        }
+        usersAdapter.setUsers(users);
+
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         observeViewModel();
 
+    }
+
+    private void initViews(){
+        recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
+        usersAdapter = new UsersAdapter();
     }
 
     private void observeViewModel(){
