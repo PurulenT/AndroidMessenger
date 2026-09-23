@@ -35,6 +35,7 @@ android {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
+    implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-auth")
     implementation(libs.activity.ktx)
     implementation(libs.appcompat)

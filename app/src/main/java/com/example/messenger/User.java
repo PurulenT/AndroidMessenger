@@ -19,6 +19,9 @@ public class User {
         this.isOnline = isOnline;
     }
 
+    public User() {
+    }
+
     public String getId() {
         return id;
     }
