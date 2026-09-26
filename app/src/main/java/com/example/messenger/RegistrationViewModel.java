@@ -11,10 +11,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationViewModel extends ViewModel {
 
     private FirebaseAuth auth;
+
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
+
     private MutableLiveData<String> error = new MutableLiveData<>();
     private MutableLiveData<FirebaseUser> user = new MutableLiveData<>();
 
@@ -40,6 +46,7 @@ public class RegistrationViewModel extends ViewModel {
 
     public void signup(
             String name,
+            String surname,
             int age,
             String email,
             String password
@@ -49,7 +56,20 @@ public class RegistrationViewModel extends ViewModel {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        //срабатывает код из конструктора
+                        FirebaseUser firebaseUser = authResult.getUser();
+                        if (firebaseUser == null){
+                            return;
+                        }
+                        User user = new User(
+                                firebaseUser.getUid(),
+                                name,
+                                surname,
+                                email,
+                                age,
+                                password,
+                                false
+                        );
+                        databaseReference.child(user.getId()).setValue(user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

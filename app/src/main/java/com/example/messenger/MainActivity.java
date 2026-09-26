@@ -57,38 +57,8 @@ public class MainActivity extends AppCompatActivity {
         });
         initViews();
         recyclerViewUsers.setAdapter(usersAdapter);
-//        for(int i = 0; i < 10; i++){
-//            User user = new User("id " + 1, "name " + i, "surname " + i,
-//                    "email " + i, i, "password " + i, false);
-//            databaseReference.push().setValue(user);
-//        }
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    User value = dataSnapshot.getValue(User.class);
-                    Log.d("MainActivity", value.toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < 30; i++){
-            users.add(new User("id" + i, "name " + i, "surname " + i,
-                    "email " + i , i, "password", new Random().nextBoolean()));
-        }
-        usersAdapter.setUsers(users);
-
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         observeViewModel();
-
     }
 
     private void initViews(){
@@ -104,6 +74,13 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(LogInActivity.newIntent(MainActivity.this));
                     finish();
                 }
+            }
+        });
+
+        viewModel.getUsers().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> usersFromDb) {
+                usersAdapter.setUsers(usersFromDb);
             }
         });
     }

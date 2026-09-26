@@ -20,6 +20,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity {
     private EditText editTextRegistrationName;
@@ -29,6 +31,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText editTextRegistrationAge;
     private Button buttonRegistrationNext;
     private RegistrationViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String email = editTextRegistrationEmailAddress.getText().toString().trim();
                 int age = Integer.parseInt(editTextRegistrationAge.getText().toString().trim());
                 String password = editTextRegistrationPassword.getText().toString().trim();
-                viewModel.signup(name, age, email, password);
+                viewModel.signup(name, surname, age, email, password);
             }
         });
     }
