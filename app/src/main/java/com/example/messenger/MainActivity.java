@@ -36,6 +36,8 @@ import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
+    private static String EXTRA_CURRENT_USER_ID = "current_user_id";
+    private String currentUserId;
     private FirebaseAuth auth;
     private final String TAG = "MainActivityLog";
     private MainViewModel viewModel;
@@ -59,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewUsers.setAdapter(usersAdapter);
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         observeViewModel();
+        currentUserId = getIntent().getStringExtra(EXTRA_CURRENT_USER_ID);
+        usersAdapter.setOnUserClickListener(new UsersAdapter.OnUserClickListener() {
+            @Override
+            public void onClick(User user) {
+                Intent intent = ChatActivity.newIntent(MainActivity.this, currentUserId, user.getId());
+                startActivity(intent);
+            }
+        });
     }
 
     private void initViews(){
@@ -85,8 +95,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public static Intent newIntent(Context context){
-        return new Intent(context, MainActivity.class);
+    public static Intent newIntent(Context context, String currentUserId){
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(EXTRA_CURRENT_USER_ID, currentUserId);
+        return intent;
     }
 
     @Override
